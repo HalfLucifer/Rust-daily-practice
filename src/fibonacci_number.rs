@@ -1,9 +1,32 @@
 /*
-   Bottom-up DP method
-   - time complexity O(n)
-   - space complexity O(n) - can be optimized
+  Bottom-up optimized DP method
+  - time complexity O(n)
+  - space complexity O(1)
 */
 pub fn fibonacci_number(n: u32) -> u32 {
+    if n == 0 {
+        return 0;
+    }
+
+    let mut f0 = 0;
+    let mut f1 = 1;
+    let mut result = f0 + f1;
+
+    for _ in 2..=n as usize {
+        result = f0 + f1;
+        f0 = f1;
+        f1 = result;
+    }
+
+    result
+}
+
+/*
+   Bottom-up memoized DP method
+   - time complexity O(n)
+   - space complexity O(n)
+*/
+pub fn fibonacci_number_dp(n: u32) -> u32 {
     let n = n as usize;
     let mut dp = Vec::with_capacity(n);
 
@@ -18,7 +41,7 @@ pub fn fibonacci_number(n: u32) -> u32 {
 }
 
 /*
-   Recursive method
+   Top-down recursive method
 */
 pub fn fibonacci_number_recursive(n: u32) -> u32 {
     match n {
@@ -33,12 +56,21 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_fibonacci() {
+    fn test_fibonacci_optimized() {
         assert_eq!(fibonacci_number(0), 0);
         assert_eq!(fibonacci_number(1), 1);
         assert_eq!(fibonacci_number(2), 1);
         assert_eq!(fibonacci_number(10), 55);
         assert_eq!(fibonacci_number(20), 6765);
+    }
+
+    #[test]
+    fn test_fibonacci_dp() {
+        assert_eq!(fibonacci_number_dp(0), 0);
+        assert_eq!(fibonacci_number_dp(1), 1);
+        assert_eq!(fibonacci_number_dp(2), 1);
+        assert_eq!(fibonacci_number_dp(10), 55);
+        assert_eq!(fibonacci_number_dp(20), 6765);
     }
 
     #[test]
