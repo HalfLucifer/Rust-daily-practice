@@ -1,22 +1,6 @@
 use std::cell::RefCell;
 use std::rc::Rc;
 
-pub struct Node<T> {
-    elem: T,
-    next: Option<Rc<RefCell<Node<T>>>>,
-    prev: Option<Rc<RefCell<Node<T>>>>,
-}
-
-impl<T> Node<T> {
-    pub fn new(value: T) -> Self {
-        Self {
-            elem: value,
-            next: None,
-            prev: None,
-        }
-    }
-}
-
 #[derive(Default)]
 pub struct DoublyLinkedList<T> {
     head: Option<Rc<RefCell<Node<T>>>>,
@@ -124,8 +108,6 @@ impl<T: Default + Copy + PartialEq> DoublyLinkedList<T> {
     }
 
     pub fn traverse(&self) -> Vec<T> {
-        let mut result = vec![];
-
         fn traverse_recursive<T: Copy>(curr: &Option<Rc<RefCell<Node<T>>>>, result: &mut Vec<T>) {
             if let Some(node) = curr {
                 result.push(node.borrow().elem);
@@ -134,9 +116,25 @@ impl<T: Default + Copy + PartialEq> DoublyLinkedList<T> {
             }
         }
 
+        let mut result = vec![];
         traverse_recursive(&self.head, &mut result);
-
         result
+    }
+}
+
+struct Node<T> {
+    elem: T,
+    next: Option<Rc<RefCell<Node<T>>>>,
+    prev: Option<Rc<RefCell<Node<T>>>>,
+}
+
+impl<T> Node<T> {
+    pub fn new(value: T) -> Self {
+        Self {
+            elem: value,
+            next: None,
+            prev: None,
+        }
     }
 }
 
