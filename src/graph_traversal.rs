@@ -30,7 +30,7 @@ impl Graph {
         }
 
         let mut result = vec![];
-        let mut queue: Vec<usize> = vec![0];
+        let mut queue: Vec<usize> = vec![0]; // Start traversing from node #0
         let mut visited: Vec<bool> = vec![false; self.num_of_nodes];
 
         while !queue.is_empty() {
@@ -50,7 +50,12 @@ impl Graph {
     }
 
     pub fn depth_first_traverse(&self) -> Vec<usize> {
-        fn depth_first_traverse_recursive(node: usize, adj_list: &Vec<Vec<usize>>, visited: &mut Vec<bool>, result: &mut Vec<usize>) {
+        fn depth_first_traverse_recursive(
+            node: usize,
+            adj_list: &Vec<Vec<usize>>,
+            visited: &mut Vec<bool>,
+            result: &mut Vec<usize>,
+        ) {
             result.push(node);
             visited[node] = true;
 
@@ -67,6 +72,8 @@ impl Graph {
 
         let mut result = vec![];
         let mut visited: Vec<bool> = vec![false; self.num_of_nodes];
+
+        // Start traversing from node #0
         depth_first_traverse_recursive(0, &self.adjacency_list, &mut visited, &mut result);
 
         result
@@ -83,8 +90,8 @@ mod tests {
             1    4 -- 6 -- 7
             |    |
             0 -- 3 -- 5
-                    |
-                    2 -- 8
+                 |
+                 2 -- 8
 
             BFS: 0,1,3,2,4,5,8,6,7
             DFS: 0,1,3,2,8,4,6,7,5
