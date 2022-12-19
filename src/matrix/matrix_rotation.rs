@@ -12,52 +12,54 @@ impl Matrix {
     }
 
     pub fn rotate_right(&mut self) {
-        if self.matrix.is_empty() {
+        if self.matrix.is_empty() || self.matrix[0].is_empty() {
             return;
         }
 
-        let len = self.matrix.len();
-        let last = len - 1;
+        let n = self.matrix.len();
 
-        for i in 0..len / 2 {
-            for j in 0..(len + 1) / 2 {
-                let temp = self.matrix[last - j][i];
-                self.matrix[last - j][i] = self.matrix[last - i][last - j];
-                self.matrix[last - i][last - j] = self.matrix[j][last - i];
-                self.matrix[j][last - i] = self.matrix[i][j];
-                self.matrix[i][j] = temp;
+        for layer in 0..n / 2 {
+            let first = layer;
+            let last = n - 1 - layer;
+
+            for i in first..last {
+                let offset = i - first; // offset=[0..last-first]
+                let top = self.matrix[first][i]; // save top left for later
+
+                self.matrix[first][i] = self.matrix[last - offset][first]; // top left <- bottom left
+                self.matrix[last - offset][first] = self.matrix[last][last - offset]; // bottom left <- bottom right
+                self.matrix[last][last - offset] = self.matrix[i][last]; // bottom right <- top right
+                self.matrix[i][last] = top; // top right <- top left
             }
         }
     }
 
     pub fn rotate_left(&mut self) {
-        if self.matrix.is_empty() {
+        if self.matrix.is_empty() || self.matrix[0].is_empty() {
             return;
         }
 
-        let len = self.matrix.len();
-        let last = len - 1;
+        let n = self.matrix.len();
 
-        for i in 0..len / 2 {
-            for j in 0..(len + 1) / 2 {
-                let temp = self.matrix[i][j];
-                self.matrix[i][j] = self.matrix[j][last - i];
-                self.matrix[j][last - i] = self.matrix[last - i][last - j];
-                self.matrix[last - i][last - j] = self.matrix[last - j][i];
-                self.matrix[last - j][i] = temp;
+        for layer in 0..n / 2 {
+            let first = layer;
+            let last = n - 1 - layer;
+
+            for i in first..last {
+                let offset = i - first; // offset=[0..last-first]
+                let top = self.matrix[first][i]; // save top left for later
+
+                self.matrix[first][i] = self.matrix[i][last]; // top left <- top right
+                self.matrix[i][last] = self.matrix[last][last - offset]; // top right <- bottom right
+                self.matrix[last][last - offset] = self.matrix[last - offset][first]; // bottom right <- bottom left
+                self.matrix[last - offset][first] = top; // bottom left <- top left
             }
         }
     }
 
     pub fn rotate_right_by_iterator(&mut self) -> Vec<Vec<i32>> {
         (0..self.matrix.len())
-            .map(|col| {
-                self.matrix
-                    .iter()
-                    .rev()
-                    .map(|row| row[col])
-                    .collect()
-            })
+            .map(|col| self.matrix.iter().rev().map(|row| row[col]).collect())
             .collect()
     }
 }
