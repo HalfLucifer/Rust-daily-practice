@@ -10,21 +10,17 @@
 // Bottom-up DP method
 pub fn coin_change(coins: Vec<i32>, amount: i32) -> i32 {
     // DP table
-    //   i: the amount of total coins
-    //   dp[i]: the min count of coins sum up to i
+    //   j: the amount of total coins
+    //   dp[j]: the min count of coins sum up to j
     let mut dp = vec![amount + 1; amount as usize + 1];
 
     // Base case: the min count is 0 for amount 0
     dp[0] = 0;
 
-    for i in 1..=amount as usize {
-        for j in 0..coins.len() {
-            let coin = coins[j];
-
-            // When amount is enough
-            if i as i32 - coin >= 0 {
-                // DP transition
-                dp[i] = dp[i].min(1 + dp[i - coin as usize]);
+    for i in 0..coins.len() {
+        for j in 1..=amount as usize {
+            if j as i32 - coins[i] >= 0 {
+                dp[j] = dp[j].min(1 + dp[j - coins[i] as usize])
             }
         }
     }
