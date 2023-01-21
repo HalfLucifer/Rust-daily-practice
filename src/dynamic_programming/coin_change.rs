@@ -12,23 +12,25 @@ pub fn coin_change(coins: Vec<i32>, amount: i32) -> i32 {
     // DP table
     //   j: the amount of total coins
     //   dp[j]: the min count of coins sum up to j
-    let mut dp = vec![amount + 1; amount as usize + 1];
+    let mut dp = vec![i32::MAX; amount as usize + 1];
 
     // Base case: the min count is 0 for amount 0
     dp[0] = 0;
 
     for i in 0..coins.len() {
         for j in 1..=amount as usize {
-            if j as i32 - coins[i] >= 0 {
-                dp[j] = dp[j].min(1 + dp[j - coins[i] as usize])
+            let index = j as i32 - coins[i];
+
+            // dp[index] is uninitialized when it equals to i32::MAX 
+            if index >= 0 && dp[index as usize] != i32::MAX {
+                dp[j] = dp[j].min(1 + dp[index as usize])
             }
         }
     }
 
-    if dp[amount as usize] == amount + 1 {
-        -1
-    } else {
-        dp[amount as usize]
+    match dp[amount as usize] {
+        i32::MAX => -1,
+        _ => dp[amount as usize],
     }
 }
 
