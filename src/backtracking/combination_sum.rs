@@ -6,14 +6,17 @@
 */
 pub fn combination_sum(candidates: Vec<i32>, target: i32) -> Vec<Vec<i32>> {
     fn backtrack(candidates: &Vec<i32>, track: &mut Vec<i32>, result: &mut Vec<Vec<i32>>, start: usize, target: i32) {
-        if target <= 0 {
-            if target == 0 {
-                result.push(track.to_vec());                
-            }
+        if target == 0 {
+            result.push(track.to_vec());
             return;
         }
-        
+
         for i in start..candidates.len() {
+            // Prune the branches
+            if target < candidates[i] {
+                continue;
+            }
+
             track.push(candidates[i]);
             backtrack(candidates, track, result, i, target - candidates[i]);
             track.pop();
