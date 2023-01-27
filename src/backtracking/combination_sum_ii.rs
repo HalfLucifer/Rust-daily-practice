@@ -12,7 +12,7 @@ pub fn combination_sum2(mut candidates: Vec<i32>, target: i32) -> Vec<Vec<i32>> 
         }
 
         for i in start..candidates.len() {
-            // Prune the branches 1)
+            // Prune the branches
             if target < candidates[i] {
                 break;
             }
@@ -31,7 +31,7 @@ pub fn combination_sum2(mut candidates: Vec<i32>, target: i32) -> Vec<Vec<i32>> 
     let mut track: Vec<i32> = vec![];
     let mut result: Vec<Vec<i32>> = vec![];
 
-    candidates.sort_unstable(); // Sort to align the same numbers
+    candidates.sort_unstable(); // Sort to align duplicated elements
     backtrack(&candidates, &mut track, &mut result, 0, target);
 
     result
