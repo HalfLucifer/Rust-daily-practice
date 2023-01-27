@@ -6,26 +6,34 @@
 */
 pub fn combination_sum2(mut candidates: Vec<i32>, target: i32) -> Vec<Vec<i32>> {
     fn backtrack(candidates: &Vec<i32>, track: &mut Vec<i32>, result: &mut Vec<Vec<i32>>, start: usize, target: i32) {
-        if target <= 0 {
-            if target == 0 {
-                result.push(track.to_vec());
-            }
+        if target == 0 {
+            result.push(track.to_vec());
             return;
         }
 
         for i in start..candidates.len() {
-            if i == start || candidates[i] != candidates[i - 1] {
-                track.push(candidates[i]);
-                backtrack(candidates, track, result, i + 1, target - candidates[i]);
-                track.pop();
+            // Prune the branches 1)
+            if target < candidates[i] {
+                break;
             }
+
+            // Skip the element already used
+            if i > start && candidates[i] == candidates[i - 1] {
+                continue;
+            }
+
+            track.push(candidates[i]);
+            backtrack(candidates, track, result, i + 1, target - candidates[i]);
+            track.pop();
         }
     }
 
     let mut track: Vec<i32> = vec![];
     let mut result: Vec<Vec<i32>> = vec![];
-    candidates.sort_unstable();
+
+    candidates.sort_unstable(); // Sort to align the same numbers
     backtrack(&candidates, &mut track, &mut result, 0, target);
+
     result
 }
 
