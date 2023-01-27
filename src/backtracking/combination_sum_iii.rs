@@ -13,7 +13,9 @@ pub fn combination_sum3(k: i32, n: i32) -> Vec<Vec<i32>> {
             return;
         }
 
-        for i in start..=9 {
+        // Prune the branches larger than 9 - (k - track.len()) + 1
+        // NOTE: iterate in [start..=9] also work
+        for i in start..=(9 - (k - track.len()) + 1) as i32 {
             track.push(i);
             backtrack(result, track, k, target - i, i + 1);
             track.pop();
