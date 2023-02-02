@@ -5,8 +5,10 @@ pub fn reverse_array(arr: &mut [i32]) {
 
     let mut left = 0;
     let mut right = arr.len() - 1;
+
     while left < right {
         arr.swap(left, right);
+        
         left += 1;
         right -= 1;
     }
