@@ -5,24 +5,25 @@
     this array.
 */
 pub fn find_min(nums: Vec<i32>) -> i32 {
-    let mut lo = 0;
-    let mut hi = nums.len() - 1;
+    let mut left = 0;
+    let mut right = nums.len() - 1;
 
-    while lo <= hi {
-        let mid = lo + (hi - lo) / 2;
+    // Converge left & right to find the min
+    while left < right {
+        let mid = left + (right - left) / 2;
 
-        if nums[mid] == nums[lo] {
-            break;
-        }
-
-        if nums[mid] < nums[hi] {
-            hi = mid;
+        if nums[mid] > nums[right] {
+        // The pivot is in [mid+1..]
+        // There is at least one value smaller than nums[mid], discard nums[mid]
+            left = mid + 1;
         } else {
-            lo = mid + 1;
+        // The pivot is in [..mid]
+        // Because nums[mid] <= nums[right], don't discard nums[mid]
+            right = mid;
         }
     }
 
-    nums[lo].min(nums[hi])
+    nums[left]
 }
 
 #[cfg(test)]
