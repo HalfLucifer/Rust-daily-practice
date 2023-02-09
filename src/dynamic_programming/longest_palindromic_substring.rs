@@ -9,6 +9,7 @@
 */
 pub fn longest_palindrome(s: String) -> String {
     let n = s.len();
+    let arr = s.as_bytes();
     let mut res_len = 0;
     let mut res = (0, 0);
 
@@ -22,8 +23,9 @@ pub fn longest_palindrome(s: String) -> String {
 
     for i in (0..n).rev() {
         for j in i + 1..n {
-            if &s[i..i + 1] == &s[j..j + 1] {
-                if j - i == 1 || dp[i + 1][j - 1] {
+            if arr[i] == arr[j] {
+                // Either a 2-chars substring or dp[i + 1][j - 1] is a palindrome
+                if j == i + 1 || dp[i + 1][j - 1] {
                     dp[i][j] = true;
 
                     if res_len < j - i {
