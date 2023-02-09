@@ -13,7 +13,7 @@ pub fn longest_palindrome(s: String) -> String {
     let mut res_len = 0;
     let mut res = (0, 0);
 
-    // DP table: dp[i][j]: whether s[i..j] is a palindrome or not
+    // DP table: dp[i][j]: whether s[i..=j] is a palindrome or not
     let mut dp = vec![vec![false; n]; n];
 
     // Base case
@@ -21,10 +21,12 @@ pub fn longest_palindrome(s: String) -> String {
         dp[i][i] = true;
     }
 
+    // DP table depends on dp[i+1][j-1], so it has to be iterated reversely
     for i in (0..n).rev() {
         for j in i + 1..n {
+            // Found the same chars 
             if arr[i] == arr[j] {
-                // Either a 2-chars substring or dp[i + 1][j - 1] is a palindrome
+                // s[i..=j] is a palindrome if either substring length is 2 or dp[i+1][j-1] is a palindrome
                 if j == i + 1 || dp[i + 1][j - 1] {
                     dp[i][j] = true;
 
