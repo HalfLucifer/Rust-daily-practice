@@ -8,32 +8,29 @@
     - Space complexity: O(n^2)
 */
 pub fn longest_palindrome(s: String) -> String {
-    let n = s.len();
     let arr = s.as_bytes();
     let mut res_len = 0;
     let mut res = (0, 0);
 
     // DP table: dp[i][j]: whether s[i..=j] is a palindrome or not
-    let mut dp = vec![vec![false; n]; n];
+    let mut dp = vec![vec![false; s.len()]; s.len()];
 
-    // Base case
-    for i in 0..n {
-        dp[i][i] = true;
-    }
+    // Base case: dp[i][i]=true, handled in below case 1)
+    // for i in 0..n {
+    //     dp[i][i] = true;
+    // }
 
-    // DP table depends on dp[i+1][j-1], so it has to be iterated reversely
-    for i in (0..n).rev() {
-        for j in i + 1..n {
-            // Found the same chars 
-            if arr[i] == arr[j] {
-                // s[i..=j] is a palindrome if either substring length is 2 or dp[i+1][j-1] is a palindrome
-                if j == i + 1 || dp[i + 1][j - 1] {
-                    dp[i][j] = true;
+    for i in (0..s.len()).rev() {
+        for j in i..s.len() {
+            // s[i..=j] is a palindrome if s[i]==s[j] and
+            //   case 1) string length is 1 or 2
+            //   case 2) dp[i+1][j-1] is a palindrome
+            if arr[i] == arr[j] && (j - i < 2 || dp[i + 1][j - 1]) {
+                dp[i][j] = true;
 
-                    if res_len < j - i {
-                        res_len = j - i;
-                        res = (i, j);
-                    }
+                if res_len < j - i {
+                    res_len = j - i;
+                    res = (i, j);
                 }
             }
         }
