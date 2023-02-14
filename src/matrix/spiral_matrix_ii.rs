@@ -1,3 +1,7 @@
+/*
+    Given a positive integer n, generate an n x n matrix filled with elements from 1 to n^2 
+    in spiral order.
+*/
 pub fn generate_matrix(n: i32) -> Vec<Vec<i32>> {
     const DIR: [(i32, i32); 4] = [(0, 1), (1, 0), (0, -1), (-1, 0)];
 
