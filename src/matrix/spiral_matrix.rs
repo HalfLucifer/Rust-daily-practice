@@ -1,3 +1,6 @@
+/*
+    Given an m x n matrix, return all elements of the matrix in spiral order.
+*/
 pub fn spiral_order(matrix: Vec<Vec<i32>>) -> Vec<i32> {
     const DIR: [(i32, i32); 4] = [(0, 1), (1, 0), (0, -1), (-1, 0)];
 
